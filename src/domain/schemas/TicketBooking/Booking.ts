@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
+import PassengerModel from './Passenger';
 const status = ['confirmed', 'rac', 'waiting'] as const;
 const berthType = ['lower', 'upper', 'side-lower', 'side-upper'] as const;
 type StatusType = (typeof status)[number];
@@ -49,12 +50,16 @@ BookingModel.init(
                 key: 'id',
             },
         },
+        age: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            defaultValue: 25
+        },
         isSeatAllocating: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false,
         },
-
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
@@ -74,6 +79,7 @@ BookingModel.init(
         paranoid: true,
     },
 );
+
 
 
 export default BookingModel

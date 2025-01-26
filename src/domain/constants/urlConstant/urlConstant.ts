@@ -5,6 +5,7 @@ const urlConstant = {
     cancel: "/cancel/:ticketId",
     booked: "/booked/:ticketId",
     available: "/available/:trainId",
+    final_chart_prepared: "/final_chart_prepared/:trainId",
   },
   passenger: {
     create_passenger: "/create_passenger",

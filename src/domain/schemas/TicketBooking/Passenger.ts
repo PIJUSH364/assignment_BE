@@ -1,5 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
+import BookingModel from './Booking';
 
 const gender = ['male', 'female'] as const;
 type GenderType = (typeof gender)[number];
@@ -69,5 +70,13 @@ PassengerModel.init(
 );
 
 
+PassengerModel.hasMany(BookingModel, {
+    foreignKey: "passengerId",
+});
+
+BookingModel.belongsTo(PassengerModel, {
+    foreignKey: "passengerId",
+});
 
 export default PassengerModel
+
