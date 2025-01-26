@@ -3,6 +3,7 @@ import { DataTypes, Model } from 'sequelize'
 import { postgresConnector } from '../../../core/utils/absoluteFilePath';
 
 interface TrainAttributes {
+    id: number;
     TrainName: String;
     SeatCount: number;
     journeyDate: Date;
@@ -12,6 +13,7 @@ interface TrainAttributes {
 }
 
 export default class TrainModel extends Model<TrainAttributes> implements TrainAttributes {
+    id: number;
     TrainName: String;
     SeatCount: number;
     journeyDate: Date;
@@ -21,6 +23,10 @@ export default class TrainModel extends Model<TrainAttributes> implements TrainA
 
 TrainModel.init
     ({
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+        },
         TrainName: {
             type: DataTypes.STRING,
             allowNull: false,
