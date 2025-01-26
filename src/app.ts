@@ -73,7 +73,7 @@ process.on("unhandledRejection", (reason, promise) => {
 
 // db
 db.sequelize
-  .sync()
+  .sync({ alter: true })
   .then(() => {
     console.log(`
       

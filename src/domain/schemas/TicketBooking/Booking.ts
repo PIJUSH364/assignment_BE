@@ -33,7 +33,7 @@ BookingModel.init(
             allowNull: true,
             defaultValue: "upper"
         },
-        TrainId: {
+        trainId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -41,7 +41,7 @@ BookingModel.init(
                 key: 'id',
             },
         },
-        passenger: {
+        passengerId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
