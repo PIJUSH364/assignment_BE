@@ -1,31 +1,34 @@
+import { joiObjectEnum } from '../../../domain/enumerations/Enumerations';
 import BookingRepository from '../../../repositories/BookingRepository';
-import PassengerRepository from '../../../repositories/PassengerRepository';
-import TrainRepository from '../../../repositories/TrainRepository';
 import BaseUseCase from '../../BaseUseCase';
-
-export default class UpdateContactUseCase extends BaseUseCase {
+import BookedTicketJoi from './BookedTicketJoi'
+export default class BookedTicketUseCase extends BaseUseCase {
     private bookingRepository: BookingRepository;
-    private passengerRepository: PassengerRepository;
-    private trainRepository: TrainRepository;
 
-    constructor(request, response, bookingRepository, passengerRepository, trainRepository) {
+    constructor(request, response, bookingRepository: BookingRepository) {
         super(request, response);
         this.bookingRepository = bookingRepository;
-        this.passengerRepository = passengerRepository;
-        this.trainRepository = trainRepository;
     }
 
     public static create(request, response) {
-        return new UpdateContactUseCase(request, response, new BookingRepository(), new TrainRepository(), new PassengerRepository());
+        return new BookedTicketUseCase(request, response, new BookingRepository());
     }
 
     public async execute() {
         try {
+            this.validate(joiObjectEnum.REQUEST_QUERY, BookedTicketJoi);
+            const { ticketId } = this.pathParams;
+
+            const data = await this.bookingRepository.findOne({ where: { id: ticketId } });
+
+            if (!data) throw new Error(`Ticket with ID ${ticketId} not found`);
 
             return {
                 code: 200,
-                message: "update Contact data successfully",
+                message: "Ticket details fetched successfully",
+                data
             };
+
         } catch (error) {
             throw error;
         }
