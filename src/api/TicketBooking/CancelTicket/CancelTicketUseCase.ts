@@ -1,31 +1,39 @@
+import { joiObjectEnum } from '../../../domain/enumerations/Enumerations';
 import BookingRepository from '../../../repositories/BookingRepository';
-import PassengerRepository from '../../../repositories/PassengerRepository';
-import TrainRepository from '../../../repositories/TrainRepository';
 import BaseUseCase from '../../BaseUseCase';
+import CancelTicketJoi from './cancelTicketJoi';
 
-export default class UpdateContactUseCase extends BaseUseCase {
+export default class CancelTicketUseCase extends BaseUseCase {
     private bookingRepository: BookingRepository;
-    private passengerRepository: PassengerRepository;
-    private trainRepository: TrainRepository;
 
-    constructor(request, response, bookingRepository, passengerRepository, trainRepository) {
+    constructor(request, response, bookingRepository: BookingRepository) {
         super(request, response);
         this.bookingRepository = bookingRepository;
-        this.passengerRepository = passengerRepository;
-        this.trainRepository = trainRepository;
     }
 
     public static create(request, response) {
-        return new UpdateContactUseCase(request, response, new BookingRepository(), new TrainRepository(), new PassengerRepository());
+        return new CancelTicketUseCase(request, response, new BookingRepository());
     }
 
     public async execute() {
         try {
+            this.validate(joiObjectEnum.REQUEST_QUERY, CancelTicketJoi);
+            const ticketId = this.pathParams.ticketId;
+
+            // Perform a soft delete on the booking (mark as deleted but not permanently removed)
+            const data = await this.bookingRepository.softDelete({ where: { id: ticketId } });
+
+            if (!data) {
+                throw new Error("Ticket not found or cannot be canceled");
+            }
+
 
             return {
                 code: 200,
-                message: "update Contact data successfully",
-            };
+                message: "Ticket canceled successfully",
+                data,
+            }
+
         } catch (error) {
             throw error;
         }
