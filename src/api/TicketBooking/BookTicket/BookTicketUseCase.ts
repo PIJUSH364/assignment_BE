@@ -1,19 +1,27 @@
-export default class UpdateContactUseCase extends BaseUseCase {
-    protected requestBody: UpdateContact;
-    private contactRepository: ContactRepository;
+import BookingRepository from '../../../repositories/BookingRepository';
+import PassengerRepository from '../../../repositories/PassengerRepository';
+import TrainRepository from '../../../repositories/TrainRepository';
+import BaseUseCase from '../../BaseUseCase';
 
-    constructor(request, response, contactRepository: ContactRepository) {
+export default class UpdateContactUseCase extends BaseUseCase {
+    private bookingRepository: BookingRepository;
+    private passengerRepository: PassengerRepository;
+    private trainRepository: TrainRepository;
+
+    constructor(request, response, bookingRepository, passengerRepository, trainRepository) {
         super(request, response);
-        this.contactRepository = contactRepository;
+        this.bookingRepository = bookingRepository;
+        this.passengerRepository = passengerRepository;
+        this.trainRepository = trainRepository;
+    }
+
+    public static create(request, response) {
+        return new UpdateContactUseCase(request, response, new BookingRepository(), new TrainRepository(), new PassengerRepository());
     }
 
     public async execute() {
         try {
-            this.validate(joiObjectEnum.REQUEST_BODY, UpdateContactJoi);
-            this.validate(joiObjectEnum.REQUEST_PARAMS, UpdateQueryContactJoi);
 
-            const data = await this.contactRepository.update(this.requestBody, { where: { id: this.pathParams.id } });
-            console.log(data);
             return {
                 code: 200,
                 message: "update Contact data successfully",
@@ -21,9 +29,5 @@ export default class UpdateContactUseCase extends BaseUseCase {
         } catch (error) {
             throw error;
         }
-    }
-
-    public static create(request, response) {
-        return new UpdateContactUseCase(request, response, new ContactRepository());
     }
 }
