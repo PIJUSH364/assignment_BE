@@ -1,25 +1,10 @@
 import { Model, DataTypes } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
 
-const gender = ['male', 'female',] as const;
+const gender = ['male', 'female'] as const;
 type GenderType = (typeof gender)[number];
 
-interface PassengerAttributes {
-    id: number;
-    name: string;
-    age: string;
-    email: string;
-    gender: GenderType;
-    hasChild: Boolean;
-    hasSeniorCitizen: Boolean;
-    createdAt: Date;
-    updatedAt?: Date;
-}
-
-
-
-
-export default class PassengerModel extends Model<PassengerAttributes> implements PassengerAttributes {
+class PassengerModel extends Model {
     id: number;
     name: string;
     age: string;
@@ -36,6 +21,7 @@ PassengerModel.init(
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true
         },
         name: {
             type: DataTypes.STRING,
@@ -44,13 +30,14 @@ PassengerModel.init(
         email: {
             type: DataTypes.STRING,
             allowNull: false,
+            unique: true
         },
         age: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
         gender: {
-            type: DataTypes.STRING,
+            type: DataTypes.ENUM('male', 'female'),
             allowNull: false,
         },
         hasChild: {
@@ -82,3 +69,5 @@ PassengerModel.init(
 );
 
 
+
+export default PassengerModel

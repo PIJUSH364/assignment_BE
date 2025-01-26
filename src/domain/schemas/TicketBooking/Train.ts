@@ -2,17 +2,8 @@
 import { DataTypes, Model } from 'sequelize'
 import { postgresConnector } from '../../../core/utils/absoluteFilePath';
 
-interface TrainAttributes {
-    id: number;
-    TrainName: String;
-    SeatCount: number;
-    journeyDate: Date;
-    createdAt: Date;
-    updatedAt: Date;
 
-}
-
-export default class TrainModel extends Model<TrainAttributes> implements TrainAttributes {
+class TrainModel extends Model {
     id: number;
     TrainName: String;
     SeatCount: number;
@@ -26,6 +17,7 @@ TrainModel.init
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true
         },
         TrainName: {
             type: DataTypes.STRING,
@@ -56,3 +48,5 @@ TrainModel.init
         timestamps: true,
         paranoid: true,
     },)
+
+export default TrainModel

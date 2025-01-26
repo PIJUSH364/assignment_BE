@@ -1,12 +1,12 @@
 import { Model, DataTypes } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
-
 const status = ['confirmed', 'rac', 'waiting'] as const;
 const berthType = ['lower', 'upper', 'side-lower', 'side-upper'] as const;
 type StatusType = (typeof status)[number];
 type BerthType = (typeof berthType)[number];
 
-interface BookingAttributes {
+
+class BookingModel extends Model {
     id: number;
     TrainId: number;
     passenger: number;
@@ -15,20 +15,6 @@ interface BookingAttributes {
     isSeatAllocating: Boolean;
     createdAt: Date;
     updatedAt: Date;
-
-}
-
-
-export default class BookingModel extends Model<BookingAttributes> implements BookingAttributes {
-    id: number;
-    TrainId: number;
-    passenger: number;
-    berthType: BerthType;
-    status: StatusType;
-    isSeatAllocating: Boolean;
-    createdAt: Date;
-    updatedAt: Date;
-
 }
 
 BookingModel.init(
@@ -36,6 +22,7 @@ BookingModel.init(
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true
         },
         status: {
             type: DataTypes.ENUM('confirmed', 'rac', 'waiting'),
@@ -50,8 +37,8 @@ BookingModel.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'Trains', // Name of the Train table
-                key: 'TrainId',
+                model: 'train',
+                key: 'id',
             },
         },
         passenger: {
@@ -89,3 +76,4 @@ BookingModel.init(
 );
 
 
+export default BookingModel

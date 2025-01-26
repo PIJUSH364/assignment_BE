@@ -7,5 +7,14 @@ const urlConstant = {
     all_contact: "/all_contact",
     count_category: "/count_category",
   },
+  tickets: {
+    book: "/book",
+    cancel: "/cancel/:ticketId",
+    booked: "/booked",
+    available: "/available",
+  },
+  passenger: {
+    create_passenger: "/create_passenger",
+  }
 };
 export default urlConstant;
