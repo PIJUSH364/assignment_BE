@@ -35,7 +35,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
             }
 
             // Allocate RAC tickets to side-lower berths
-            await this.bookingRepository.update(
+            const racAllocate = await this.bookingRepository.update(
                 {
                     isSeatAllocating: true,
                     berthType: "side-lower",
@@ -64,7 +64,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                             model: PassengerModel,
                             as: 'passenger',
                             where: {
-                                age: { [Op.gte]: "60" },
+                                age: { [Op.gt]: 59 },
                             },
                             required: true,
                         },
@@ -110,6 +110,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                     status: 'confirmed',
                     isSeatAllocating: false,
                 },
+                order: [['createdAt', 'ASC']], // Order by oldest RAC ticket
                 limit: 63 - 27, // Total confirm seats minus allocated lower
             });
 
@@ -126,10 +127,23 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                 if (upperBerthCount > 0) availableBerths.push('upper');
                 if (sideUpperBerthCount > 0) availableBerths.push('side-upper');
 
-                // Randomly select a berth type from the available options
-                const randomIndex = randomInt(availableBerths.length);
-                const berthType = availableBerths[randomIndex];
+                let berthType = "upper";
 
+                const curPassenger = await this.bookingRepository.findOne({
+                    where: { id: ticket.id },
+                    attributes: ["berthType"] // Correct key for selecting specific columns
+                });
+
+                // if preference bath is available then allocate that bath
+                if (curPassenger && availableBerths.includes(curPassenger.dataValues.berthType)) {
+                    berthType = curPassenger.dataValues.berthType
+                } else {
+                    // Randomly select a berth type from the available options
+                    const randomIndex = randomInt(availableBerths.length);
+                    berthType = availableBerths[randomIndex];
+                }
+
+                console.log(curPassenger)
                 // Update the respective count based on the selected berth type
                 switch (berthType) {
                     case 'lower':
@@ -144,7 +158,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                 }
 
                 // Update the booking record with the randomly selected berth type
-                await this.bookingRepository.update(
+                const randomBathAllocated = await this.bookingRepository.update(
                     {
                         isSeatAllocating: true,
                         berthType,
