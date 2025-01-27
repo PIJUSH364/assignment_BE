@@ -46,59 +46,85 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
             );
 
             // Allocate senior citizen seats to lower berths
-            let [seniorCitizenCount] = await this.bookingRepository.update(
+
+            // Step 1: Find the rows to update with a limit
+            const seniorCitizenPassengersToUpdate = await this.bookingRepository.find({
+                where: {
+                    trainId,
+                    status: 'confirmed',
+                    isSeatAllocating: false,
+                    berthType: "lower",
+                },
+                include: [
+                    {
+                        model: PassengerModel,
+                        as: 'passenger',
+                        where: {
+                            age: { [Op.gt]: 59 },
+                        },
+                        required: true,
+                    },
+                ],
+                limit: 27, // Apply the limit here
+            });
+
+            // Step 2: Extract IDs of the rows to update
+            const idsToUpdate = seniorCitizenPassengersToUpdate.map(record => record.id); // Assuming 'id' is the primary key
+
+            // Step 3: Update only the rows found in the previous step
+            const [seniorCitizenCount] = await this.bookingRepository.update(
                 {
                     isSeatAllocating: true,
                     berthType: "lower",
-
                 },
                 {
+                    where: {
+                        id: idsToUpdate,
+                    },
+                }
+            );
+
+            console.log(`Updated ${seniorCitizenCount} rows.`);
+
+            // Allocate remaining lower berths to women
+            let remainingLowerBerths = 27 - seniorCitizenCount;
+            if (remainingLowerBerths > 0) {
+                // Step 1: Find the limited rows to update
+                const womenPassengersToUpdate = await this.bookingRepository.find({
                     where: {
                         trainId,
                         status: 'confirmed',
                         isSeatAllocating: false,
-                        berthType: "lower"// if preference is lower then only set as a lower bath 
+                        berthType: "lower" // if preference is lower then only set as a lower berth
                     },
                     include: [
                         {
                             model: PassengerModel,
                             as: 'passenger',
-                            where: {
-                                age: { [Op.gt]: 59 },
-                            },
+                            where: { gender: "female" },
                             required: true,
                         },
                     ],
-                    limit: 27,
-                }
-            );
+                    limit: remainingLowerBerths, // Limit the number of rows
+                });
 
-            // Allocate remaining lower berths to women
-            let remainingLowerBerths = 27 - seniorCitizenCount;
-            if (remainingLowerBerths > 0) {
-                let [womenCount] = await this.bookingRepository.update(
+                // Step 2: Extract IDs to update
+                const idsToUpdate = womenPassengersToUpdate.map((row) => row.id);
+
+                // Step 3: Perform the update
+                const [womenCount] = await this.bookingRepository.update(
                     {
                         isSeatAllocating: true,
                         berthType: "lower",
                     },
                     {
                         where: {
-                            trainId,
-                            status: 'confirmed',
-                            isSeatAllocating: false,
-                            berthType: "lower"// if preference is lower then only set as a lower bath 
+                            id: idsToUpdate, // Update only the rows found in Step 1
                         },
-                        include: [
-                            {
-                                model: PassengerModel,
-                                as: 'passenger',
-                                where: { gender: "female" },
-                                required: true,
-                            },
-                        ],
-                        limit: remainingLowerBerths,
                     }
                 );
+
+                console.log(`${womenCount} rows were updated.`);
 
                 remainingLowerBerths -= womenCount;
             }
