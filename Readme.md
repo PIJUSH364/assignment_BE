@@ -82,6 +82,7 @@ This document provides details about the endpoints for the "local" API, includin
 - **Response:**
   Not documented.
 
+
 ### 6. Check Ticket Availability
 - **URL:** `http://localhost:8001/api/v1/tickets/available/{trainId}`
 - **Method:** `GET`
