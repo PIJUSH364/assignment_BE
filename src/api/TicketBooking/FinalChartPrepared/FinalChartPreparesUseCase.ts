@@ -105,7 +105,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                             required: true,
                         },
                     ],
-                    limit: remainingLowerBerths, // Limit the number of rows
+                    limit: remainingLowerBerths,
                 });
 
                 // Step 2: Extract IDs to update
