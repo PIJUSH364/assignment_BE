@@ -137,7 +137,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                     isSeatAllocating: false,
                 },
                 order: [['createdAt', 'ASC']], // Order by oldest RAC ticket
-                limit: 63 - 27, // Total confirm seats minus allocated lower
+
             });
 
             // Allocate remaining tickets to upper and side-upper berths
@@ -169,7 +169,7 @@ export default class FinalChartPreparesUseCase extends BaseUseCase {
                     berthType = availableBerths[randomIndex];
                 }
 
-                console.log(curPassenger)
+
                 // Update the respective count based on the selected berth type
                 switch (berthType) {
                     case 'lower':
