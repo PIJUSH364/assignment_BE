@@ -16,13 +16,13 @@ const dbConfig = {
   },
   define: {
     freezeTableName: true,
-  },
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // For Render or other managed databases
-    },
-  },
+  }
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false, // For Render or other managed databases
+  //   },
+  // },
 
 }
 module.exports = {

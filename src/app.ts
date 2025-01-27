@@ -10,10 +10,11 @@ const app = express();
 const port = process.env.port ?? 8000;
 import db from "./domain/models/index";
 import { expressRateLimiter } from "./middleware/rateLimit";
-// require("./domain/schemas/user/User");
 
 //route
-import contactRoutes from "./api/contact/Route";
+import TicketRoutes from "./api/TicketBooking/Route";
+import PassengerRoutes from "./api/Passenger/Route";
+
 
 // Morgan Middleware for logging
 app.use(morgan("dev"));
@@ -45,7 +46,9 @@ app.get("/", (_, res) => {
   res.send("sever running...");
 });
 
-app.use("/", contactRoutes);
+
+app.use("/api/v1/tickets", TicketRoutes);
+app.use("/api/v1/passenger", PassengerRoutes);
 
 // invalid route
 app.get("*", (_, res) => {
@@ -70,7 +73,7 @@ process.on("unhandledRejection", (reason, promise) => {
 
 // db
 db.sequelize
-  .sync()
+  .sync({ alter: true })
   .then(() => {
     console.log(`
       

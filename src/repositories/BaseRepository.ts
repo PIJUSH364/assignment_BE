@@ -1,15 +1,16 @@
 export default abstract class BaseRepository {
   abstract model(): any;
 
+
   async findOne(predicate: any) {
     const model = this.model();
     const obj = await model.findOne(predicate);
     return obj;
   }
 
-  async softDelete(predicate: Object) {
+  async softDelete(predicate: Object, transaction: any) {
     const model = this.model();
-    const obj = await model.destroy(predicate);
+    const obj = await model.destroy(predicate, { transaction });
     return obj;
   }
 
