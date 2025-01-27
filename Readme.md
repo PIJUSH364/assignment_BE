@@ -2,6 +2,9 @@
 
 ## Overview
 This document provides details about the endpoints for the "local" API, including request methods, URLs, payloads, and responses.
+## Db Diagram
+
+![Alt Text](/Railway_system.png)
 
 ## Endpoints
 
