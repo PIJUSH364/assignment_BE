@@ -1,7 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import { postgresConnector } from "../../../core/utils/absoluteFilePath";
 
-const validRoles = ["admin", "manager", "user"] as const;
+const validRoles = ["admin", "manager", "member"] as const;
 type RoleType = (typeof validRoles)[number];
 
 class UserModel extends Model {

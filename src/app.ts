@@ -12,9 +12,7 @@ import db from "./domain/models/index";
 import { expressRateLimiter } from "./middleware/rateLimit";
 
 //route
-import TicketRoutes from "./api/TicketBooking/Route";
-import PassengerRoutes from "./api/Passenger/Route";
-
+import UserRoutes from "./api/user/Route";
 
 // Morgan Middleware for logging
 app.use(morgan("dev"));
@@ -46,9 +44,7 @@ app.get("/", (_, res) => {
   res.send("sever running...");
 });
 
-
-app.use("/api/v1/tickets", TicketRoutes);
-app.use("/api/v1/passenger", PassengerRoutes);
+app.use("/api/v1/user", UserRoutes);
 
 // invalid route
 app.get("*", (_, res) => {

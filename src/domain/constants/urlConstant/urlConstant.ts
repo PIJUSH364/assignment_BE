@@ -1,5 +1,4 @@
 const urlConstant = {
-
   tickets: {
     book: "/book",
     cancel: "/cancel/:ticketId",
@@ -12,6 +11,13 @@ const urlConstant = {
   },
   train: {
     create_trainDetails: "/create_trainDetails",
-  }
+  },
+  user: {
+    create_user: "/create_user",
+    update_user: "/update_user",
+    delete_user: "/delete_user",
+    get_user: "/get_user/:id",
+    get_all_user: "/get_all_users",
+  },
 };
 export default urlConstant;
