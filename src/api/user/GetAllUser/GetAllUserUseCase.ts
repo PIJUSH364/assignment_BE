@@ -18,7 +18,7 @@ export default class GetAllUserUseCase extends BaseUseCase {
 
       return {
         code: 200,
-        message: "all user data successfully",
+        message: "Get all user data successfully",
         data,
       };
     } catch (error) {

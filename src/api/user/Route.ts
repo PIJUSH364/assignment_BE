@@ -5,6 +5,7 @@ import GetUserUseCase from "./GetUser/GetUserUseCase";
 import GetAllUserUseCase from "./GetAllUser/GetAllUserUseCase";
 import UpdateUserUseCase from "./UpdateUser/UpdateUserUseCase";
 import DeleteUserUseCase from "./DeleteUser/DeleteUserUseCase";
+import SearchUserDataUseCase from "./SearchUserData/SearchUserDataUseCase";
 
 const router = express.Router();
 
@@ -26,6 +27,10 @@ router.put(urlConstant.user.update_user, async (request: Request, response: Resp
 });
 router.delete(urlConstant.user.delete_user, async (request: Request, response: Response) => {
   const useCase = DeleteUserUseCase.create(request, response);
+  await useCase.executeAndHandleErrors();
+});
+router.get(urlConstant.user.search_user_details, async (request: Request, response: Response) => {
+  const useCase = SearchUserDataUseCase.create(request, response);
   await useCase.executeAndHandleErrors();
 });
 

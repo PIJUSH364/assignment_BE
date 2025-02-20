@@ -18,6 +18,7 @@ const urlConstant = {
     delete_user: "/delete_user",
     get_user: "/get_user/:id",
     get_all_user: "/get_all_users",
+    search_user_details: "/search_user_details",
   },
 };
 export default urlConstant;
