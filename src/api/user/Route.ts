@@ -7,6 +7,7 @@ import UpdateUserUseCase from "./UpdateUser/UpdateUserUseCase";
 import DeleteUserUseCase from "./DeleteUser/DeleteUserUseCase";
 import SearchUserDataUseCase from "./SearchUserData/SearchUserDataUseCase";
 import FilterUserUseCase from "./FilterUser/FilterUserUseCase";
+import UserPaginationUseCase from "./UserPagination/UserPaginationUseCase";
 
 const router = express.Router();
 
@@ -36,6 +37,16 @@ router.get(urlConstant.user.search_user_details, async (request: Request, respon
 });
 router.get(urlConstant.user.filter_user_data, async (request: Request, response: Response) => {
   const useCase = FilterUserUseCase.create(request, response);
+  await useCase.executeAndHandleErrors();
+});
+
+router.get(urlConstant.user.filter_user_data, async (request: Request, response: Response) => {
+  const useCase = FilterUserUseCase.create(request, response);
+  await useCase.executeAndHandleErrors();
+});
+
+router.get(urlConstant.user.get_user_data, async (request: Request, response: Response) => {
+  const useCase = UserPaginationUseCase.create(request, response);
   await useCase.executeAndHandleErrors();
 });
 export default router;
