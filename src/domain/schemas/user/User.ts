@@ -4,11 +4,15 @@ import { postgresConnector } from "../../../core/utils/absoluteFilePath";
 const validRoles = ["admin", "manager", "member"] as const;
 type RoleType = (typeof validRoles)[number];
 
+const status = ["active", "deactive"] as const;
+type StatusType = (typeof status)[number];
+
 class UserModel extends Model {
   id!: number;
   name!: string;
   email!: string;
   role!: RoleType;
+  status!: StatusType;
   createdAt!: Date;
   updatedAt!: Date;
 }
@@ -38,6 +42,10 @@ UserModel.init(
     role: {
       type: DataTypes.ENUM(...validRoles),
       allowNull: false,
+    },
+    status: {
+      type: DataTypes.ENUM(...status),
+      defaultValue: "active",
     },
     createdAt: {
       type: DataTypes.DATE,
