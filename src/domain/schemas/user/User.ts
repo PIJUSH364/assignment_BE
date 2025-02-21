@@ -4,7 +4,7 @@ import { postgresConnector } from "../../../core/utils/absoluteFilePath";
 const validRoles = ["admin", "manager", "member"] as const;
 type RoleType = (typeof validRoles)[number];
 
-const status = ["active", "deactive"] as const;
+const status = ["active", "inactive"] as const;
 type StatusType = (typeof status)[number];
 
 class UserModel extends Model {

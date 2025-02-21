@@ -6,6 +6,10 @@ const UpdateUserJoi = Joi.object({
   name: Joi.string().optional().messages(ErrorUtility.joiHelper("name", "string", false)),
   email: Joi.string().optional().email().messages(ErrorUtility.joiHelper("email", "email", false)),
   role: Joi.string().optional().valid("admin", "member").messages(ErrorUtility.joiHelper("role", "string", false)),
+  status: Joi.string()
+    .optional()
+    .valid("active", "inactive")
+    .messages(ErrorUtility.joiHelper("status", "string", false)),
 });
 
 export default UpdateUserJoi;
