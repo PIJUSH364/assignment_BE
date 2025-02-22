@@ -21,7 +21,7 @@ export default class UserPaginationUseCase extends BaseUseCase {
 
       // Get page and limit from query params
       const page = Number(this.queryParams?.page) || 1;
-      const limit = Number(this.queryParams?.limit) || 5;
+      const limit = Number(this.queryParams?.pageSize) || 5;
 
       const offset = (page - 1) * limit; // Calculate offset
 
