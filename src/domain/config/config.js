@@ -1,13 +1,14 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const { dbUsername, dbUserPassword, dbName, dbHost, dbDialect, dbPoolMax, dbPoolMin, dbPoolAquire, dbPoolIdle } = process.env;
+const { dbUsername, dbUserPassword, dbName, dbHost, dbDialect, dbPoolMax, dbPoolMin, dbPoolAquire, dbPoolIdle } =
+  process.env;
 
 const dbConfig = {
-  "username": dbUsername,
-  "password": dbUserPassword,
-  "database": dbName,
-  "host": dbHost,
-  "dialect": dbDialect,
+  username: dbUsername,
+  password: dbUserPassword,
+  database: dbName,
+  host: dbHost,
+  dialect: dbDialect,
   pool: {
     max: Number(dbPoolMax),
     min: Number(dbPoolMin),
@@ -16,17 +17,16 @@ const dbConfig = {
   },
   define: {
     freezeTableName: true,
-  }
-  // dialectOptions: {
-  //   ssl: {
-  //     require: true,
-  //     rejectUnauthorized: false, // For Render or other managed databases
-  //   },
-  // },
-
-}
+  },
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // For Render or other managed databases
+    },
+  },
+};
 module.exports = {
-  "development": dbConfig,
+  development: dbConfig,
   "pre-production": dbConfig,
-  "production": dbConfig
-}
+  production: dbConfig,
+};
