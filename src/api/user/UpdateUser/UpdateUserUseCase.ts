@@ -17,7 +17,7 @@ export default class UpdateUserUseCase extends BaseUseCase {
   public async execute() {
     try {
       this.validate(joiObjectEnum.REQUEST_BODY, UpdateUserJoi);
-      console.log(this.requestBody);
+
       const data = await this.userRepository.update(this.requestBody, {
         where: { id: this.requestBody.id },
       });
