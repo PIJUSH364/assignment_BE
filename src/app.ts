@@ -7,7 +7,7 @@ import helmet from "helmet";
 dotenv.config();
 
 const app = express();
-const port = process.env.port ?? 8000;
+const port = process.env.port || 4000;
 import db from "./domain/models/index";
 import { expressRateLimiter } from "./middleware/rateLimit";
 
