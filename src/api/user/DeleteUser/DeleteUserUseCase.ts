@@ -16,8 +16,9 @@ export default class DeleteUserUseCase extends BaseUseCase {
     try {
       this.validate(joiObjectEnum.REQUEST_BODY, DeleteUserJoi);
 
-      const data = await this.userRepository.softDelete({ where: { id: this.requestBody.id } });
-      console.log(data);
+      // bulk delete and single delete as well
+      const data = await this.userRepository.softDelete({ where: { id: this.requestBody.ids } });
+
       return {
         code: 200,
         message: "Delete user data successfully",
