@@ -18,6 +18,7 @@ const dbConfig = {
   define: {
     freezeTableName: true,
   },
+  // For SSL connection , uncomment the following lines
   dialectOptions: {
     ssl: {
       require: true,
